@@ -6,8 +6,8 @@ def get_data():
 	return {
 		"Map Location":{
 			"color": "grey",
-			"icon": "icon-file",
+			"icon": "icon-map-marker",
 			"type": "module",
-			"label": _("Map Location5")
+			"label": _("Map Location")
 		}
 	}

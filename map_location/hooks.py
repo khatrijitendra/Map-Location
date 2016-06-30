@@ -12,7 +12,7 @@ app_version = "0.0.1"
 app_license = "MIT"
 
 
-app_include_js = "assets/js/leaflet.js"
+app_include_js = "assets/map_location/js/leaflet.js"
 # Includes in <head>
 # ------------------
 
