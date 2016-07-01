@@ -17,29 +17,41 @@ frappe.ui.form.on('Location On Map', {
 		get_long_lat()
 	},
 	validate:function(frm){
-		common_function_render_map(frm)
+		/*common_function_render_map(frm)*/
+		get_long_lat()
 	}
 });
 
 get_long_lat = function(frm){
-	if(!cur_frm.doc.lat && !cur_frm.doc.lon){
-		$.getScript("http://maps.google.com/maps/api/js?key=AIzaSyAVi7DMYisboDNzzVPLxq3nXDFDrfI4gmo&sensor=false&v=3.exp", function(){
-			var geocoder = new google.maps.Geocoder();
-			var address = ""+cur_frm.doc.pincode+","+cur_frm.doc.city+","+cur_frm.doc.country;
-			console.log(address,"address")
-			console.log(geocoder,"geocoder")
-			geocoder.geocode( {'address': address}, function(results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					var latitude = results[0].geometry.location.lat();
-					var longitude = results[0].geometry.location.lng();
-					console.log(longitude,latitude)
-					cur_frm.set_value("lon",longitude)
-					cur_frm.set_value("lat",latitude)
-					common_function_render_map(frm)
-				} 
-			});
-		});
-	}	
+	frappe.call({
+        method: "frappe.client.get_value",
+        args: {
+            doctype: "MAP Setting",
+            fieldname: "api_key",
+		    filters: { name: "MAP Setting" },
+        },
+       	callback: function(res){
+          	if (res && res.message){
+          		console.log(res.message['api_key'])
+				$.getScript("http://maps.google.com/maps/api/js?key="+res.message['api_key']+"&sensor=false&v=3.exp", function(){
+					var geocoder = new google.maps.Geocoder();
+					var address = ""+cur_frm.doc.pincode+","+cur_frm.doc.city+","+cur_frm.doc.country;
+					console.log(address,"address")
+					console.log(geocoder,"geocoder")
+					geocoder.geocode( {'address': address}, function(results, status) {
+						if (status == google.maps.GeocoderStatus.OK) {
+							var latitude = results[0].geometry.location.lat();
+							var longitude = results[0].geometry.location.lng();
+							console.log(longitude,latitude)
+							cur_frm.set_value("lon",longitude)
+							cur_frm.set_value("lat",latitude)
+							common_function_render_map(frm)
+						} 
+					});
+				});
+           	}
+       	}  	
+    });
 }
 
 

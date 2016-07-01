@@ -13,6 +13,8 @@ app_license = "MIT"
 
 
 app_include_js = "assets/map_location/js/leaflet.js"
+
+fixtures =["MAP Setting"]
 # Includes in <head>
 # ------------------
 
